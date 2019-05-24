@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,20 +11,27 @@ public class UiManager : Singleton<UiManager>
     private void Test()
     {
         GetScreen<MainMenu>().HelloText = "HelloWorld";
-        ShowScreen(GetScreen<MainMenu>());
+     
     }
-    public T GetScreen<T>() where T : IScreen
+    public T GetScreen<T>() where T : ScreenBase
     {
         ScreenBase window = Screens.Find(x => x.GetType() == typeof(T));
         return (T)(object)window;
     }
-    public void ShowScreen(IScreen window)
+    public void  OnScreenStateChanged(ScreenBase screen, ScreenState oldState, ScreenState newState)
     {
-        if (currentScreen==null)
-            currentScreen = window;
-
-        currentScreen.Hide();
-        currentScreen = window;
-        currentScreen.Show();
+       
+    }
+    public T Show<T>() where T: ScreenBase
+    {
+        ScreenBase screen = GetScreen<T>();
+        screen.Show();
+        return (T)screen;
+    }
+    public T Hide<T>() where T : ScreenBase
+    {
+        ScreenBase screen = GetScreen<T>();
+        screen.Hide();
+        return (T)screen;
     }
 }
